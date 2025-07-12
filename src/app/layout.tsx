@@ -4,6 +4,7 @@ import { ThemeProvider } from '@/components/theme-provider';
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 import { Toaster } from "@/components/ui/toaster"
+import { SubmissionsProvider } from '@/context/SubmissionsContext';
 
 export const metadata: Metadata = {
   title: 'PoéticaMente',
@@ -23,12 +24,14 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,14..72,400;0,14..72,700;1,14..72,400&display=swap" rel="stylesheet" />
       </head>
       <body className="font-body antialiased min-h-screen flex flex-col">
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <Header />
-          <main className="flex-grow">{children}</main>
-          <Footer />
-          <Toaster />
-        </ThemeProvider>
+        <SubmissionsProvider>
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            <Header />
+            <main className="flex-grow">{children}</main>
+            <Footer />
+            <Toaster />
+          </ThemeProvider>
+        </SubmissionsProvider>
       </body>
     </html>
   );

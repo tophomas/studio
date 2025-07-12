@@ -1,14 +1,15 @@
 "use client";
 
-import { useState, useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import type { Submission } from '@/lib/types';
 import { SUBMISSIONS } from '@/lib/constants';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { useSubmissions } from '@/context/SubmissionsContext';
 
 export default function Home() {
-  const [submissions, setSubmissions] = useState<Submission[]>(SUBMISSIONS);
+  const { submissions } = useSubmissions();
   const [themeFilter, setThemeFilter] = useState('all');
   const [typeFilter, setTypeFilter] = useState('all');
   const [ratingFilter, setRatingFilter] = useState('all');

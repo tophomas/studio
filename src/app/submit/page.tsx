@@ -29,6 +29,8 @@ import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/hooks/use-toast";
 import { submitText } from "./actions";
 import { Loader2 } from "lucide-react";
+import { useSubmissions } from "@/context/SubmissionsContext";
+import type { Submission } from "@/lib/types";
 
 const submissionSchema = z.object({
   text: z.string().min(20, "Your text must be at least 20 characters long.").max(2000, "Your text cannot exceed 2000 characters."),
@@ -37,14 +39,12 @@ const submissionSchema = z.object({
   theme: z.enum(['Nature', 'Urban', 'Science', 'Fantasy', 'Love', 'Sci-Fi'], { required_error: "Please select a theme." }),
   type: z.enum(['Poem', 'Short Story'], { required_error: "Please select a writing type." }),
   tags: z.string().optional(),
-}).refine(data => !data.isAnonymous ? !!data.author && data.author.length > 0 : true, {
-  message: "Author name is required unless submitting anonymously.",
-  path: ["author"],
 });
 
 export default function SubmitPage() {
   const { toast } = useToast();
   const [isPending, startTransition] = useTransition();
+  const { addSubmission } = useSubmissions();
 
   const form = useForm<z.infer<typeof submissionSchema>>({
     resolver: zodResolver(submissionSchema),
@@ -64,6 +64,17 @@ export default function SubmitPage() {
           title: "Submission Successful",
           description: result.message,
         });
+        
+        const newSubmission: Submission = {
+          id: new Date().toISOString(),
+          text: values.text,
+          author: values.isAnonymous ? 'Anonymous' : values.author || 'Anonymous',
+          theme: values.theme,
+          type: values.type,
+          rating: 'General', // Defaulting rating to General
+        };
+        addSubmission(newSubmission);
+        
         form.reset();
       } else {
         toast({
