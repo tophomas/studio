@@ -21,17 +21,15 @@ export function Header() {
   const NavLink = ({ href, children }: { href: string; children: React.ReactNode }) => {
     const isActive = pathname === href;
     return (
-      <SheetClose asChild>
-        <Link
-          href={href}
-          className={cn(
-            "text-muted-foreground transition-colors hover:text-foreground",
-            isActive && "text-foreground"
-          )}
-        >
-          {children}
-        </Link>
-      </SheetClose>
+      <Link
+        href={href}
+        className={cn(
+          "text-muted-foreground transition-colors hover:text-foreground",
+          isActive && "text-foreground"
+        )}
+      >
+        {children}
+      </Link>
     );
   };
   
@@ -75,10 +73,12 @@ export function Header() {
               </Button>
             </SheetTrigger>
             <SheetContent side="left" className="pr-0">
-              <Link href="/" className="mr-6 flex items-center space-x-2 mb-6">
-                <Feather className="h-6 w-6 text-primary" />
-                <span className="font-bold font-headline">PoéticaMente</span>
-              </Link>
+              <SheetClose asChild>
+                <Link href="/" className="mr-6 flex items-center space-x-2 mb-6">
+                  <Feather className="h-6 w-6 text-primary" />
+                  <span className="font-bold font-headline">PoéticaMente</span>
+                </Link>
+              </SheetClose>
               <div className="flex flex-col space-y-3">
                 <nav className="grid gap-2 text-lg font-medium">
                    {navLinks.map(link => <MobileNavLink key={link.href} href={link.href} label={link.label} icon={link.icon} />)}
